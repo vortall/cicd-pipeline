@@ -23,7 +23,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script{
-                    dockerImage = docker.build("vortall/ci-cd:v1.0.0")
+                   def dockerImage = docker.build("vortall/ci-cd:v1.0.0")
                 }
             }
         }
