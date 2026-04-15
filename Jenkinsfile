@@ -2,10 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                sh 'echo "hello"'
+                sh './scripts/build.sh'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh './scripts/test.sh'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script{
+                    dockerImage = docker.build("vortall/ci-cd:v1.0.0")
+                }
             }
         }
     }
+    
 }
