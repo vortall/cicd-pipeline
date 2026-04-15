@@ -27,6 +27,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                script{
+                    sh 'docker run -d -p 3000:3000 vortall/ci-cd:v1.0.0'
+                }
+            }
+        }
     }
     
 }
