@@ -50,7 +50,6 @@ pipeline {
                         image = 'nodedev:v1.0'
                     }
 
-                    sh 'docker rm -f $(docker ps -aq) || true'
                     sh "docker run -d -p ${port}:${port} ${image}"
                 }
             }
