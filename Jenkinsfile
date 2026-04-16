@@ -1,11 +1,59 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'node'
+    }
+
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                sh 'echo "hello"'
+                sh 'chmod +x scripts/build.sh'
+                sh './scripts/build.sh'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'chmod +x scripts/test.sh'
+                sh './scripts/test.sh'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script{
+                    if (env.BRANCH_NAME == main) {
+                        def dockerImage = docker.build("nodemain:v1.0")
+                    }
+                    
+                    else {
+                        def dockerImage = docker.build("nodedev:v1.0")
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script{
+                    def port = ''
+                    def image = ''
+
+                    if (env.BRANCH_NAME == main) {
+                        port = 3000
+                        image = 'nodemain:v1.0'
+                    }
+                    
+                    else {
+                        port = 3001
+                        image = 'nodedev:v1.0'
+                    }
+
+                    sh 'docker run -d -p ${port}:${port} $image'
+                }
             }
         }
     }
+    
 }
