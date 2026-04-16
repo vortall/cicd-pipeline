@@ -23,12 +23,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script{
-                    if (env.BRANCH_NAME == main) {
-                        def dockerImage = docker.build("nodemain:v1.0")
+                    if (env.BRANCH_NAME == 'main') {
+                        sh 'docker build -t nodemain:v1.0'
                     }
                     
                     else {
-                        def dockerImage = docker.build("nodedev:v1.0")
+                        sh 'docker build -t nodedev:v1.0'
                     }
                 }
             }
@@ -50,7 +50,8 @@ pipeline {
                         image = 'nodedev:v1.0'
                     }
 
-                    sh 'docker run -d -p ${port}:${port} $image'
+                    sh 'docker rm -f $(docker ps -aq) || true'
+                    sh "docker run -d -p ${port}:${port} ${image}"
                 }
             }
         }
