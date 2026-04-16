@@ -33,27 +33,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy') {
-            steps {
-                script{
-                    def port = ''
-                    def image = ''
-
-                    if (env.BRANCH_NAME == 'main') {
-                        port = 3000
-                        image = 'nodemain:v1.0'
-                    }
-                    
-                    else {
-                        port = 3001
-                        image = 'nodedev:v1.0'
-                    }
-
-                    sh "docker run -d -p ${port}:3000 ${image}"
-                }
-            }
-        }
     }
     
 }
