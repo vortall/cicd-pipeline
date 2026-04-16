@@ -24,11 +24,11 @@ pipeline {
             steps {
                 script{
                     if (env.BRANCH_NAME == 'main') {
-                        sh 'docker build -t nodemain:v1.0'
+                        sh 'docker build -t nodemain:v1.0 .'
                     }
                     
                     else {
-                        sh 'docker build -t nodedev:v1.0'
+                        sh 'docker build -t nodedev:v1.0 .'
                     }
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
                     def port = ''
                     def image = ''
 
-                    if (env.BRANCH_NAME == main) {
+                    if (env.BRANCH_NAME == 'main') {
                         port = 3000
                         image = 'nodemain:v1.0'
                     }
