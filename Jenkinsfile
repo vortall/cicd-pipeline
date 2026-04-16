@@ -50,7 +50,7 @@ pipeline {
                         image = 'nodedev:v1.0'
                     }
 
-                    sh "docker run -d -p ${port}:${port} ${image}"
+                    sh "docker run -d -p ${port}:3000 ${image}"
                 }
             }
         }
