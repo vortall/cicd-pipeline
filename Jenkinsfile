@@ -23,7 +23,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script{
-                   def dockerImage = docker.build("vortall/ci-cd:v1.0.0")
+                    if (env.BRANCH_NAME == main) {
+                        def dockerImage = docker.build("nodemain:v1.0")
+                    }
+                    
+                    else {
+                        def dockerImage = docker.build("nodedev:v1.0")
+                    }
                 }
             }
         }
@@ -31,7 +37,20 @@ pipeline {
         stage('Deploy') {
             steps {
                 script{
-                    sh 'docker run -d -p 3000:3000 vortall/ci-cd:v1.0.0'
+                    def port = ''
+                    def image = ''
+
+                    if (env.BRANCH_NAME == main) {
+                        port = 3000
+                        image = 'nodemain:v1.0'
+                    }
+                    
+                    else {
+                        port = 3001
+                        image = 'nodedev:v1.0'
+                    }
+
+                    sh 'docker run -d -p ${port}:${port} $image'
                 }
             }
         }
