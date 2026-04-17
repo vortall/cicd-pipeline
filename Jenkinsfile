@@ -36,7 +36,7 @@ pipeline {
                 script{
                     if (env.BRANCH_NAME == 'main') {
                         sh 'docker build -t vortall/nodemain:v1.0 .'
-                        def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress vortall/nodedev:v1.0", returnStdout: true).trim()
+                        def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress vortall/nodemain:v1.0", returnStdout: true).trim()
                         echo "Vulnerability Report for MAIN:\n${vulnerabilities}"
                         sh 'docker push vortall/nodemain:v1.0'
                     }
